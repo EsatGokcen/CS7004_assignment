@@ -1,3 +1,4 @@
+from src.controller.config import *
 from src.model.eldoria_map import EldoriaMap
 from src.model.treasure_type import TreasureType
 from src.model.treasure import Treasure
@@ -7,6 +8,7 @@ class Simulation:
 
     def __init__(self, map_obj: EldoriaMap):
         self.map = map_obj
+        self.__running = False
 
     def scatter_treasures(self, num_treasures: int) -> None:
         for _ in range(num_treasures):
@@ -25,3 +27,9 @@ class Simulation:
                         obj.lose_value()
                         if obj.is_depleted():
                             cell.remove_object(obj)
+
+    def run(self):
+        self.scatter_treasures(NUM_INITIAL_TREASURES)
+        self.__running = True
+        while self.__running:
+            self.decay_all_treasures()
