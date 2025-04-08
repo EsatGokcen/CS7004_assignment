@@ -3,7 +3,7 @@ from src.model.treasure_type import TreasureType
 from src.model.treasure import Treasure
 from random import randint, choice
 
-class SimulationController:
+class Simulation:
 
     def __init__(self, map_obj: EldoriaMap):
         self.map = map_obj
@@ -15,3 +15,13 @@ class SimulationController:
             t_type = choice(list(TreasureType))
             treasure = Treasure(t_type)
             self.map.get_cell(x, y).add_object(treasure)
+
+    def decay_all_treasures(self) -> None:
+        for x in range(self.map.get_width()):
+            for y in range(self.map.get_height()):
+                cell = self.map.get_cell(x, y)
+                for obj in cell.contents[:]:
+                    if isinstance(obj, Treasure):
+                        obj.lose_value()
+                        if obj.is_depleted():
+                            cell.remove_object(obj)
