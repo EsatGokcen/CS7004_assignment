@@ -1,5 +1,7 @@
 from src.model.cell import Cell
 from src.model.hunter_skills import Skill
+from src.model.treasure import Treasure
+from typing import List
 
 
 class TreasureHunter:
@@ -7,7 +9,7 @@ class TreasureHunter:
     def __init__(self, cell: Cell, skill: Skill):
         self._cell = cell
         self._stamina: float = 100.0
-        self._carried_treasure = None
+        self._carried_treasure: List[Treasure] = []
         self._skill = skill
         self._memory = {"treasures": [], "hideouts": []}
         self._survival_steps_remaining = 3
@@ -24,6 +26,15 @@ class TreasureHunter:
 
     def get_memory(self) -> dict:
         return self._memory
+
+    def get_carried_treasure(self) -> List[Treasure]:
+        return self._carried_treasure
+
+    def is_carrying_treasure(self) -> bool:
+        return self._carried_treasure is not None
+
+    def deposit_treasure(self) -> None:
+        self._carried_treasure = [] # deposit logic happens in hideout class store_treasure() method
 
     def move_to(self, new_cell: Cell) -> None:
         self._cell.remove_object(self)

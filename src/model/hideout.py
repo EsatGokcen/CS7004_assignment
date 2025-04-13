@@ -1,5 +1,6 @@
 from src.model.cell import Cell
 from src.model.treasure_hunter import TreasureHunter
+from src.model.treasure import Treasure
 from typing import List
 import random
 
@@ -8,6 +9,7 @@ class Hideout:
     def __init__(self, cell: Cell):
         self._cell = cell
         self._hunters: List[TreasureHunter] = []
+        self._stored_treasure: List[Treasure] = []
         cell.add_object(self)
 
     def get_cell(self) -> Cell:
@@ -47,3 +49,13 @@ class Hideout:
             self.add_hunter(new_hunter)
             return new_hunter
         return None
+
+    def store_treasure(self, hunter: TreasureHunter) -> None:
+        if hunter.is_carrying_treasure():
+            treasures = hunter.get_carried_treasure()
+            for treasure in treasures:
+                self._stored_treasure.append(treasure)
+                hunter.deposit_treasure()
+
+    def get_stored_treasure(self) -> List[Treasure]:
+        return self._stored_treasure.copy()
