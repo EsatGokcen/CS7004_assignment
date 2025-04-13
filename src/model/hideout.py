@@ -28,3 +28,9 @@ class Hideout:
         if hunter in self._hunters:
             self._hunters.remove(hunter)
             self._cell.remove_object(hunter)
+
+    def share_knowledge(self) -> None:
+        for i, h1 in enumerate(self._hunters):
+            for j, h2 in enumerate(self._hunters):
+                if i != j:
+                    h1.share_memory(h2)
