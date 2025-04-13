@@ -51,3 +51,7 @@ class TreasureHunter:
 
     def can_act(self) -> bool:
         return not self.is_collapsed() or self._survival_steps_remaining > 0
+
+    def share_memory(self, other: 'TreasureHunter') -> None:
+        self._memory["treasures"].extend(t for t in other._memory["treasures"] if t not in self._memory["treasures"])
+        self._memory["hideouts"].extend(h for h in other._memory["hideouts"] if h not in self._memory["hideouts"])
