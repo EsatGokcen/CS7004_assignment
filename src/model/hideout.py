@@ -14,3 +14,12 @@ class Hideout:
 
     def get_hunters(self) -> List[TreasureHunter]:
         return self._hunters.copy()
+
+    def has_space(self) -> bool:
+        return len(self._hunters) < 5
+
+    def add_hunter(self, hunter: TreasureHunter) -> None:
+        if self.has_space():
+            self._hunters.append(hunter)
+            if hunter not in self._cell.contents:
+                self._cell.add_object(hunter)
