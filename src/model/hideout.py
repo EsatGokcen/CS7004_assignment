@@ -1,6 +1,7 @@
 from src.model.cell import Cell
 from src.model.treasure_hunter import TreasureHunter
 from typing import List
+import random
 
 
 class Hideout:
@@ -34,3 +35,15 @@ class Hideout:
             for j, h2 in enumerate(self._hunters):
                 if i != j:
                     h1.share_memory(h2)
+
+    def recruit_new_hunter(self) -> TreasureHunter | None:
+        if not self.has_space():
+            return None
+
+        skills_present = set(h.get_skill() for h in self._hunters)
+        if len(skills_present) > 1 and random.random() < 0.2:
+            skill_choice = random.choice(list(skills_present))
+            new_hunter = TreasureHunter(self._cell, skill_choice)
+            self.add_hunter(new_hunter)
+            return new_hunter
+        return None
