@@ -8,3 +8,9 @@ class Hideout:
         self._cell = cell
         self._hunters: List[TreasureHunter] = []
         cell.add_object(self)
+
+    def get_cell(self) -> Cell:
+        return self._cell
+
+    def get_hunters(self) -> List[TreasureHunter]:
+        return self._hunters.copy()
