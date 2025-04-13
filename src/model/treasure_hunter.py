@@ -24,3 +24,11 @@ class TreasureHunter:
 
     def get_memory(self) -> dict:
         return self._memory
+
+    def move_to(self, new_cell: Cell):
+        self._cell.remove_object(self)
+        new_cell.add_object(self)
+        self._cell = new_cell
+        self._stamina -= 2.0
+        if self._stamina < 0:
+            self._stamina = 0
