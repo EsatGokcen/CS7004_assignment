@@ -9,7 +9,7 @@ class TreasureHunter:
     def __init__(self, cell: Cell, skill: Skill):
         self._cell = cell
         self._stamina: float = 100.0
-        self._carried_treasure: List[Treasure] = []
+        self._carried_treasure: Treasure | None = None
         self._skill = skill
         self._memory = {"treasures": [], "hideouts": []}
         self._survival_steps_remaining = 3
@@ -27,14 +27,14 @@ class TreasureHunter:
     def get_memory(self) -> dict:
         return self._memory
 
-    def get_carried_treasure(self) -> List[Treasure]:
+    def get_carried_treasure(self) -> Treasure | None:
         return self._carried_treasure
 
     def is_carrying_treasure(self) -> bool:
         return self._carried_treasure is not None
 
     def deposit_treasure(self) -> None:
-        self._carried_treasure = [] # deposit logic happens in hideout class store_treasure() method
+        self._carried_treasure = None # deposit logic happens in hideout class store_treasure() method
 
     def move_to(self, new_cell: Cell) -> None:
         self._cell.remove_object(self)
@@ -62,6 +62,14 @@ class TreasureHunter:
 
     def can_act(self) -> bool:
         return not self.is_collapsed() or self._survival_steps_remaining > 0
+
+    def remember(self, treasures: List, hideouts: List[Cell]) -> None:
+        for treasure in treasures:
+            if treasure not in self._memory["treasures"]:
+                self._memory["treasures"].append(treasure)
+        for hideout in hideouts:
+            if hideout not in self._memory["hideouts"]:
+                self._memory["hideouts"].append(hideout)
 
     def share_memory(self, other: 'TreasureHunter') -> None:
         self._memory["treasures"].extend(t for t in other._memory["treasures"] if t not in self._memory["treasures"])

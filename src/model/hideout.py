@@ -52,10 +52,9 @@ class Hideout:
 
     def store_treasure(self, hunter: TreasureHunter) -> None:
         if hunter.is_carrying_treasure():
-            treasures = hunter.get_carried_treasure()
-            for treasure in treasures:
-                self._stored_treasure.append(treasure)
-                hunter.deposit_treasure()
+            treasure = hunter.get_carried_treasure()
+            self._stored_treasure.append(treasure)
+            hunter.deposit_treasure()
 
     def get_stored_treasure(self) -> List[Treasure]:
         return self._stored_treasure.copy()
