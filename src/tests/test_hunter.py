@@ -34,5 +34,17 @@ class TestTreasureHunter(unittest.TestCase):
         self.hunter.rest()  # already at 100
         self.assertEqual(self.hunter.get_stamina(), 100.0)
 
+    def test_is_critical_and_collapsed(self):
+        self.hunter._stamina = 6.0
+        self.assertTrue(self.hunter.is_critical())
+        self.hunter._stamina = 0.0
+        self.assertTrue(self.hunter.is_collapsed())
+
+    def test_survival_tick_decreases_counter(self):
+        self.hunter._stamina = 0.0
+        self.assertTrue(self.hunter.can_act())
+        self.hunter.tick_survival()
+        self.assertEqual(self.hunter._survival_steps_remaining, 2)
+
 if __name__ == '__main__':
     unittest.main()
