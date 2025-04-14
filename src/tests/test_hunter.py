@@ -46,5 +46,15 @@ class TestTreasureHunter(unittest.TestCase):
         self.hunter.tick_survival()
         self.assertEqual(self.hunter._survival_steps_remaining, 2)
 
+    def test_remember_and_share_memory(self):
+        self.hunter.remember([self.treasure], [self.hideout_cell])
+        self.assertIn(self.treasure, self.hunter.get_memory()["treasures"])
+        self.assertIn(self.hideout_cell, self.hunter.get_memory()["hideouts"])
+
+        other = TreasureHunter(self.cell, Skill.ENDURANCE)
+        other.remember([], [self.hideout_cell])
+        self.hunter.share_memory(other)
+        self.assertIn(self.hideout_cell, self.hunter.get_memory()["hideouts"])
+
 if __name__ == '__main__':
     unittest.main()
