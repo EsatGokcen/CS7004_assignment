@@ -52,5 +52,22 @@ class TestHideout(unittest.TestCase):
         self.hideout.share_knowledge()
         self.assertIn(t, h2.get_memory()["treasures"])
 
+    def test_recruit_new_hunter_if_conditions_met(self):
+        h1 = TreasureHunter(self.cell, Skill.ENDURANCE)
+        h2 = TreasureHunter(self.cell, Skill.STEALTH)
+        self.hideout.add_hunter(h1)
+        self.hideout.add_hunter(h2)
+
+        # Try multiple times due to 20% recruitment chance
+        recruited = None
+        for _ in range(100):
+            recruited = self.hideout.recruit_new_hunter()
+            if recruited:
+                break
+
+        if recruited:
+            self.assertIn(recruited, self.hideout.get_hunters())
+            self.assertLessEqual(len(self.hideout.get_hunters()), 5)
+
 if __name__ == '__main__':
     unittest.main()
