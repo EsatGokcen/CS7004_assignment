@@ -25,5 +25,14 @@ class TestTreasureHunter(unittest.TestCase):
         self.assertEqual(self.hunter.get_stamina(), 98.0)
         self.assertEqual(self.hunter.get_cell(), new_cell)
 
+    def test_rest_increases_stamina(self):
+        self.hunter.move_to(Cell(0, 1))  # drop stamina to 98
+        self.hunter.rest()
+        self.assertEqual(self.hunter.get_stamina(), 99.0)
+
+    def test_stamina_never_exceeds_100(self):
+        self.hunter.rest()  # already at 100
+        self.assertEqual(self.hunter.get_stamina(), 100.0)
+
 if __name__ == '__main__':
     unittest.main()
