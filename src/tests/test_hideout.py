@@ -32,5 +32,14 @@ class TestHideout(unittest.TestCase):
         self.hideout.remove_hunter(hunter)
         self.assertNotIn(hunter, self.hideout.get_hunters())
 
+    def test_store_treasure_removes_from_hunter(self):
+        hunter = TreasureHunter(self.cell, Skill.ENDURANCE)
+        treasure = Treasure(TreasureType.BRONZE)
+        hunter._carried_treasure = treasure  # Simulate carrying
+        self.hideout.add_hunter(hunter)
+        self.hideout.store_treasure(hunter)
+        self.assertIn(treasure, self.hideout.get_stored_treasure())
+        self.assertFalse(hunter.is_carrying_treasure())
+
 if __name__ == '__main__':
     unittest.main()
