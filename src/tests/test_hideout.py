@@ -41,5 +41,16 @@ class TestHideout(unittest.TestCase):
         self.assertIn(treasure, self.hideout.get_stored_treasure())
         self.assertFalse(hunter.is_carrying_treasure())
 
+    def test_share_knowledge_among_hunters(self):
+        cell = self.cell
+        t = Treasure(TreasureType.GOLD)
+        h1 = TreasureHunter(cell, Skill.ENDURANCE)
+        h2 = TreasureHunter(cell, Skill.NAVIGATION)
+        h1.remember([t], [])
+        self.hideout.add_hunter(h1)
+        self.hideout.add_hunter(h2)
+        self.hideout.share_knowledge()
+        self.assertIn(t, h2.get_memory()["treasures"])
+
 if __name__ == '__main__':
     unittest.main()
