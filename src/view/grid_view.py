@@ -32,12 +32,12 @@ class GridView:
                 self.canvas.create_rectangle(x1, y1, x2, y2, fill=fill_color, outline="gray")
 
     def get_color(self, cell: Cell) -> str:
-        if cell.contains_hunter(): # IMPLEMENT METHOD
+        if cell.contains_hunter():
             return "blue"
-        elif cell.contains_knight(): # IMPLEMENT METHOD
+        elif cell.contains_knight():
             return "red"
-        elif cell.contains_treasure(): # IMPLEMENT METHOD
+        elif cell.contains_treasure():
             return "gold"
-        elif cell.is_hideout(): # IMPLEMENT METHOD
+        elif cell.is_hideout():
             return "green"
         return "white"
