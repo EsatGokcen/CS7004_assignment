@@ -49,6 +49,7 @@ class Simulation:
 
     def run(self):
         self.scatter_treasures(NUM_INITIAL_TREASURES)
+        self.place_hideouts_and_hunters(NUM_HIDEOUTS, INITIAL_HUNTERS_PER_HIDEOUT)
         self.__running = True
         while self.__running:
             self.decay_all_treasures()
