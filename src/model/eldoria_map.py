@@ -18,3 +18,12 @@ class EldoriaMap:
 
     def get_height(self) -> int:
         return self.__height
+
+    def get_adjacent_cells(self, cell: Cell) -> list:
+        x, y = cell.get_x(), cell.get_y()
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # up, down, left, right
+        neighbours = []
+        for dx, dy in directions:
+            nx, ny = (x + dx) % self.get_width(), (y + dy) % self.get_height()
+            neighbours.append(self.get_cell(nx, ny))
+        return neighbours
