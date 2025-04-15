@@ -1,7 +1,7 @@
 import tkinter as tk
 
 class InfoPanel:
-    def __init__(self, master: tk.Widget):
+    def __init__(self, master: tk.Tk):
         self.frame = tk.Frame(master, padx=10, pady=10)
 
         self.step_label = tk.Label(self.frame, text="Step: 0")

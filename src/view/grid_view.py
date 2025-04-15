@@ -6,7 +6,7 @@ from src.model.cell import Cell
 
 
 class GridView:
-    def __init__(self, master: tk.Widget):
+    def __init__(self, master: tk.Tk):
         self.map = EldoriaMap(MAP_WIDTH, MAP_HEIGHT)
         self.frame = tk.Frame(master)
 
