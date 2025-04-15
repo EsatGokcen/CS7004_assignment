@@ -47,9 +47,57 @@ class Simulation:
                 hunter = TreasureHunter(cell, skill)
                 hideout.add_hunter(hunter)
 
+    def step_hunters(self) -> None:
+        for hideout in self._hideouts:
+            for hunter in hideout.get_hunters():
+                if not hunter.can_act():
+                    hunter.tick_survival()
+                    continue
+
+                if hunter.is_critical():
+                    hunter.rest()
+                    continue
+
+                cell = hunter.get_cell()
+                neighbors = self.map.get_adjacent_cells(cell)
+                visible_objects = [obj for neighbor in neighbors for obj in neighbor.contents]
+
+                treasures = [obj for obj in visible_objects if isinstance(obj, Treasure)]
+                hideouts = [obj for obj in visible_objects if isinstance(obj, Hideout)]
+
+                hunter.remember(treasures, [h.get_cell() for h in self._hideouts])
+
+                if hunter.is_carrying_treasure():
+                    # Go to closest hideout if visible
+                    for neighbor in neighbors:
+                        if any(isinstance(obj, Hideout) for obj in neighbor.contents):
+                            hunter.move_to(neighbor)
+                            for obj in neighbor.contents:
+                                if isinstance(obj, Hideout):
+                                    obj.store_treasure(hunter)
+                            break
+                    else:
+                        hunter.move_to(choice(neighbors))
+                else:
+                    # Pick best treasure
+                    if treasures:
+                        best = max(treasures, key=lambda t: t.get_value())
+                        for neighbor in neighbors:
+                            if best in neighbor.contents:
+                                hunter.move_to(neighbor)
+                                hunter._carried_treasure = best
+                                best.mark_collected()
+                                break
+                    else:
+                        hunter.move_to(choice(neighbors))
+
+            hideout.share_knowledge()
+            hideout.recruit_new_hunter()
+
     def run(self):
         self.scatter_treasures(NUM_INITIAL_TREASURES)
         self.place_hideouts_and_hunters(NUM_HIDEOUTS, INITIAL_HUNTERS_PER_HIDEOUT)
         self.__running = True
         while self.__running:
             self.decay_all_treasures()
+            self.step_hunters()
