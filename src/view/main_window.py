@@ -18,22 +18,5 @@ class MainWindow:
         self.grid_view = GridView(self.root, map_obj)
         self.grid_view.frame.grid(row=0, column=1, rowspan=2)
 
-        # Hook up control callbacks (stubbed for now)
-        self.controls.on_start = self.start_simulation
-        self.controls.on_pause = self.pause_simulation
-        self.controls.on_reset = self.reset_simulation
-
-        # Simulation state (stub)
-        self.simulation_step = 0
-
-    def start_simulation(self):
-        print("Simulation started")  # Replace with real logic
-
-    def pause_simulation(self):
-        print("Simulation paused")  # Replace with real logic
-
-    def reset_simulation(self):
-        print("Simulation reset")  # Replace with real logic
-
     def run(self):
         self.root.mainloop()
