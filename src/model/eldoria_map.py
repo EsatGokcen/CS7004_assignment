@@ -29,4 +29,7 @@ class EldoriaMap:
         return neighbours
 
     def clear(self):
-        pass
+        for x in range(self.__width):
+            for y in range(self.__height):
+                self.grid[x][y].contents.clear()
+
