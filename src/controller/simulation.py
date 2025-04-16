@@ -128,8 +128,17 @@ class Simulation:
         self.ui.grid_view.draw_grid()
         hunters = sum(len(h.get_hunters()) for h in self._hideouts)
         knights = 0  # Update this when knight logic is added
-        # collected = sum(h.get_total_treasure_int() for h in self._hideouts)
-        self.ui.info_panel.update_info(self._step_count, hunters, knights, collected) # needs to be fixed
+
+        bronze = silver = gold = 0
+        for h in self._hideouts:
+            b, s, g = h.count_treasure_types()
+            bronze += b
+            silver += s
+            gold += g
+
+        self.ui.info_panel.update_info(
+            self._step_count, hunters, knights, bronze, silver, gold
+        )
         self.ui.root.after(500, self.run_step)  # delay in ms
 
     def run(self) -> None:
