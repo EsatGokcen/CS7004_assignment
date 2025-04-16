@@ -131,3 +131,10 @@ class Simulation:
         collected = sum(h.get_stored_treasure() for h in self._hideouts)
         self.ui.info_panel.update_info(self._step_count, hunters, knights, collected)
         self.ui.root.after(500, self.run_step)  # delay in ms
+
+    def run(self):
+        self.scatter_treasures(NUM_INITIAL_TREASURES)
+        self.place_hideouts_and_hunters(NUM_HIDEOUTS, INITIAL_HUNTERS_PER_HIDEOUT)
+        self.ui.grid_view.draw_grid()
+        self.ui.run()
+

@@ -1,6 +1,4 @@
-from src.model.treasure_hunter import TreasureHunter
 from src.model.treasure import Treasure
-from src.model.hideout import Hideout
 
 # Mock Knight class for now
 class Knight: pass
@@ -28,6 +26,7 @@ class Cell:
         return len(self.contents) == 0
 
     def contains_hunter(self) -> bool:
+        from src.model.treasure_hunter import TreasureHunter
         return any(isinstance(obj, TreasureHunter) for obj in self.contents)
 
     def contains_knight(self) -> bool:
@@ -37,6 +36,7 @@ class Cell:
         return any(isinstance(obj, Treasure) for obj in self.contents)
 
     def is_hideout(self) -> bool:
+        from src.model.hideout import Hideout
         return any(isinstance(obj, Hideout) for obj in self.contents)
 
     def __repr__(self) -> str:
