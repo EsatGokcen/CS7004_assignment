@@ -1,4 +1,5 @@
 from src.controller.config import *
+from src.view.main_window import MainWindow
 from src.model.eldoria_map import EldoriaMap
 from src.model.treasure_type import TreasureType
 from src.model.treasure import Treasure
@@ -13,6 +14,20 @@ class Simulation:
         self.map = map_obj
         self.__running = False
         self._hideouts = []
+        self.ui = MainWindow()
+        self.ui.controls.on_start = self.start
+        self.ui.controls.on_pause = self.pause
+        self.ui.controls.on_reset = self.reset
+        self._step_count = 0
+
+    def start(self):
+        pass
+
+    def pause(self):
+        pass
+
+    def reset(self):
+        pass
 
     def scatter_treasures(self, num_treasures: int) -> None:
         for _ in range(num_treasures):
