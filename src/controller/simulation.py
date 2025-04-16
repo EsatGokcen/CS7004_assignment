@@ -1,7 +1,7 @@
 from src.controller.config import *
+from src.controller.treasure_controller import *
 from src.view.main_window import MainWindow
 from src.model.eldoria_map import EldoriaMap
-from src.model.treasure_type import TreasureType
 from src.model.treasure import Treasure
 from src.model.treasure_hunter import TreasureHunter
 from src.model.hideout import Hideout
@@ -35,27 +35,9 @@ class Simulation:
         self._hideouts.clear()
         self._step_count = 0
         self.ui.info_panel.update_info(0, 0, 0, NUM_HIDEOUTS, 0, 0, 0, 0)
-        self.scatter_treasures(NUM_INITIAL_TREASURES)
+        scatter_treasures(NUM_INITIAL_TREASURES, self.map)
         self.place_hideouts_and_hunters(NUM_HIDEOUTS, INITIAL_HUNTERS_PER_HIDEOUT)
         self.ui.grid_view.draw_grid()
-
-    def scatter_treasures(self, num_treasures: int) -> None:
-        for _ in range(num_treasures):
-            x = randint(0, self.map.get_width() - 1)
-            y = randint(0, self.map.get_height() - 1)
-            t_type = choice(list(TreasureType))
-            treasure = Treasure(t_type)
-            self.map.get_cell(x, y).add_object(treasure)
-
-    def decay_all_treasures(self) -> None:
-        for x in range(self.map.get_width()):
-            for y in range(self.map.get_height()):
-                cell = self.map.get_cell(x, y)
-                for obj in cell.contents[:]:
-                    if isinstance(obj, Treasure):
-                        obj.lose_value()
-                        if obj.is_depleted():
-                            cell.remove_object(obj)
 
     def place_hideouts_and_hunters(self, num_hideouts: int, hunters_per_hideout_range: tuple) -> None:
 
@@ -93,7 +75,7 @@ class Simulation:
                 hunter.remember(treasures, [h.get_cell() for h in self._hideouts])
 
                 if hunter.is_carrying_treasure():
-                    # Go to closest hideout if visible
+                    # Go to nearest hideout if visible
                     for neighbor in neighbors:
                         if any(isinstance(obj, Hideout) for obj in neighbor.contents):
                             hunter.move_to(neighbor)
@@ -123,7 +105,7 @@ class Simulation:
         if not self.__running:
             return
         self._step_count += 1
-        self.decay_all_treasures()
+        decay_all_treasures(self.map)
         self.step_hunters()
         self.ui.grid_view.draw_grid()
         hunters = sum(len(h.get_hunters()) for h in self._hideouts)
@@ -144,7 +126,7 @@ class Simulation:
         self.ui.root.after(500, self.run_step)  # delay in ms
 
     def run(self) -> None:
-        self.scatter_treasures(NUM_INITIAL_TREASURES)
+        scatter_treasures(NUM_INITIAL_TREASURES, self.map)
         self.place_hideouts_and_hunters(NUM_HIDEOUTS, INITIAL_HUNTERS_PER_HIDEOUT)
         self.ui.grid_view.draw_grid()
         self.ui.run()
