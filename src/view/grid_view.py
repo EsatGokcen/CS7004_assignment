@@ -6,8 +6,8 @@ from src.model.cell import Cell
 
 
 class GridView:
-    def __init__(self, master: tk.Tk):
-        self.map = EldoriaMap(MAP_WIDTH, MAP_HEIGHT)
+    def __init__(self, master: tk.Tk, map_obj: EldoriaMap):
+        self.map = map_obj
         self.frame = tk.Frame(master)
 
         canvas_width = self.map.get_width() * CELL_SIZE

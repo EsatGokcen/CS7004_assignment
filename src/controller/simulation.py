@@ -15,7 +15,7 @@ class Simulation:
         self.map = map_obj
         self.__running = False
         self._hideouts: List[Hideout] = []
-        self.ui = MainWindow()
+        self.ui = MainWindow(self.map)
         self.ui.controls.on_start = self.start
         self.ui.controls.on_pause = self.pause
         self.ui.controls.on_reset = self.reset
@@ -128,7 +128,7 @@ class Simulation:
         self.ui.grid_view.draw_grid()
         hunters = sum(len(h.get_hunters()) for h in self._hideouts)
         knights = 0  # Update this when knight logic is added
-        collected = sum(h.get_stored_treasure() for h in self._hideouts)
+        collected = sum(h.get_total_treasure_int() for h in self._hideouts)
         self.ui.info_panel.update_info(self._step_count, hunters, knights, collected)
         self.ui.root.after(500, self.run_step)  # delay in ms
 

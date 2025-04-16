@@ -58,3 +58,6 @@ class Hideout:
 
     def get_stored_treasure(self) -> List[Treasure]:
         return self._stored_treasure.copy()
+
+    def get_total_treasure_int(self) -> int:
+        return len(self._stored_treasure)

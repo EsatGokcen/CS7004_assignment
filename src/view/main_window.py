@@ -4,7 +4,7 @@ from src.view.info_panel import InfoPanel
 from src.view.control_panel import Controls
 
 class MainWindow:
-    def __init__(self):
+    def __init__(self, map_obj):
         self.root = tk.Tk()
         self.root.title("Knights of Eldoria")
 
@@ -15,7 +15,7 @@ class MainWindow:
         self.controls = Controls(self.root)
         self.controls.frame.grid(row=1, column=0, sticky="sw")
 
-        self.grid_view = GridView(self.root)
+        self.grid_view = GridView(self.root, map_obj)
         self.grid_view.frame.grid(row=0, column=1, rowspan=2)
 
         # Hook up control callbacks (stubbed for now)
