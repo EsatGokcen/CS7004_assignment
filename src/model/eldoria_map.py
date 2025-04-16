@@ -27,3 +27,6 @@ class EldoriaMap:
             nx, ny = (x + dx) % self.get_width(), (y + dy) % self.get_height()
             neighbours.append(self.get_cell(nx, ny))
         return neighbours
+
+    def clear(self):
+        pass

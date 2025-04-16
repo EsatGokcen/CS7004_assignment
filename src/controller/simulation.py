@@ -20,14 +20,23 @@ class Simulation:
         self.ui.controls.on_reset = self.reset
         self._step_count = 0
 
-    def start(self):
-        pass
+    def start(self) -> None:
+        if not self.__running:
+            self.__running = True
+            self.run_step()
 
-    def pause(self):
-        pass
+    def pause(self) -> None:
+        self.__running = False
 
-    def reset(self):
-        pass
+    def reset(self) -> None:
+        self.__running = False
+        self.map.clear()  # You'll need to implement this
+        self._hideouts.clear()
+        self._step_count = 0
+        self.ui.info_panel.update_info(0, 0, 0, 0)
+        self.scatter_treasures(NUM_INITIAL_TREASURES)
+        self.place_hideouts_and_hunters(NUM_HIDEOUTS, INITIAL_HUNTERS_PER_HIDEOUT)
+        self.ui.grid_view.draw_grid()
 
     def scatter_treasures(self, num_treasures: int) -> None:
         for _ in range(num_treasures):
@@ -116,3 +125,6 @@ class Simulation:
         while self.__running:
             self.decay_all_treasures()
             self.step_hunters()
+
+    def run_step(self):
+        pass
