@@ -34,7 +34,7 @@ class Simulation:
         self.map.clear()  # You'll need to implement this
         self._hideouts.clear()
         self._step_count = 0
-        self.ui.info_panel.update_info(0, 0, 0, 0, 0, 0)
+        self.ui.info_panel.update_info(0, 0, 0, NUM_HIDEOUTS, 0, 0, 0, 0)
         self.scatter_treasures(NUM_INITIAL_TREASURES)
         self.place_hideouts_and_hunters(NUM_HIDEOUTS, INITIAL_HUNTERS_PER_HIDEOUT)
         self.ui.grid_view.draw_grid()
@@ -128,6 +128,8 @@ class Simulation:
         self.ui.grid_view.draw_grid()
         hunters = sum(len(h.get_hunters()) for h in self._hideouts)
         knights = 0  # Update this when knight logic is added
+        hideouts = len(self._hideouts)
+        garrisons = 0 # Update this when garrison logic is added
 
         bronze = silver = gold = 0
         for h in self._hideouts:
@@ -137,7 +139,7 @@ class Simulation:
             gold += g
 
         self.ui.info_panel.update_info(
-            self._step_count, hunters, knights, bronze, silver, gold
+            self._step_count, hunters, knights, hideouts, garrisons, bronze, silver, gold
         )
         self.ui.root.after(500, self.run_step)  # delay in ms
 
