@@ -7,13 +7,14 @@ from src.model.treasure_hunter import TreasureHunter
 from src.model.hideout import Hideout
 from src.model.hunter_skills import Skill
 from random import randint, choice
+from typing import List
 
 class Simulation:
 
     def __init__(self, map_obj: EldoriaMap):
         self.map = map_obj
         self.__running = False
-        self._hideouts = []
+        self._hideouts: List[Hideout] = []
         self.ui = MainWindow()
         self.ui.controls.on_start = self.start
         self.ui.controls.on_pause = self.pause
@@ -118,13 +119,15 @@ class Simulation:
             hideout.share_knowledge()
             hideout.recruit_new_hunter()
 
-    def run(self):
-        self.scatter_treasures(NUM_INITIAL_TREASURES)
-        self.place_hideouts_and_hunters(NUM_HIDEOUTS, INITIAL_HUNTERS_PER_HIDEOUT)
-        self.__running = True
-        while self.__running:
-            self.decay_all_treasures()
-            self.step_hunters()
-
-    def run_step(self):
-        pass
+    def run_step(self) -> None:
+        if not self.__running:
+            return
+        self._step_count += 1
+        self.decay_all_treasures()
+        self.step_hunters()
+        self.ui.grid_view.draw_grid()
+        hunters = sum(len(h.get_hunters()) for h in self._hideouts)
+        knights = 0  # Update this when knight logic is added
+        collected = sum(h.get_stored_treasure() for h in self._hideouts)
+        self.ui.info_panel.update_info(self._step_count, hunters, knights, collected)
+        self.ui.root.after(500, self.run_step)  # delay in ms
