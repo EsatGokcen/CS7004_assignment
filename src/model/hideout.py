@@ -1,6 +1,7 @@
 from src.model.cell import Cell
 from src.model.treasure_hunter import TreasureHunter
 from src.model.treasure import Treasure
+from src.model.treasure_type import TreasureType
 from typing import List
 import random
 
@@ -59,5 +60,13 @@ class Hideout:
     def get_stored_treasure(self) -> List[Treasure]:
         return self._stored_treasure.copy()
 
-    def get_total_treasure_int(self) -> int:
-        return len(self._stored_treasure)
+    def count_treasure_types(self) -> tuple[int, int, int]:
+        bronze = silver = gold = 0
+        for t in self._stored_treasure:
+            if t.get_type() == TreasureType.BRONZE:
+                bronze += 1
+            elif t.get_type() == TreasureType.SILVER:
+                silver += 1
+            elif t.get_type() == TreasureType.GOLD:
+                gold += 1
+        return bronze, silver, gold
