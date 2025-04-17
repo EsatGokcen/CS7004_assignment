@@ -3,11 +3,7 @@ from src.controller.treasure_controller import *
 from src.controller.hunter_and_hideout_controller import *
 from src.view.main_window import MainWindow
 from src.model.eldoria_map import EldoriaMap
-from src.model.treasure import Treasure
-from src.model.treasure_hunter import TreasureHunter
 from src.model.hideout import Hideout
-from src.model.hunter_skills import Skill
-from random import randint, choice
 from typing import List
 
 class Simulation:

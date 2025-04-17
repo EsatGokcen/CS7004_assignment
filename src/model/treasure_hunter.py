@@ -1,6 +1,8 @@
 from src.model.cell import Cell
 from src.model.hunter_skills import Skill
+from src.model.hideout import Hideout
 from src.model.treasure import Treasure
+from src.model.treasure_type import TreasureType
 from typing import List
 
 
@@ -9,6 +11,7 @@ class TreasureHunter:
     def __init__(self, cell: Cell, skill: Skill):
         self._cell = cell
         self._stamina: float = 100.0
+        self._wealth: float = 0.0
         self._carried_treasure: Treasure | None = None
         self._skill = skill
         self._memory = {"treasures": [], "hideouts": []}
@@ -20,6 +23,9 @@ class TreasureHunter:
 
     def get_stamina(self) -> float:
         return self._stamina
+
+    def get_wealth(self) -> float:
+        return self._wealth
 
     def get_skill(self) -> Skill:
         return self._skill
@@ -34,7 +40,15 @@ class TreasureHunter:
         return self._carried_treasure is not None
 
     def deposit_treasure(self) -> None:
-        self._carried_treasure = None # deposit logic happens in hideout class store_treasure() method
+        if self._carried_treasure:
+            t_type = self._carried_treasure.get_type()
+            if t_type == TreasureType.BRONZE:
+                self._wealth += 3.0
+            elif t_type == TreasureType.SILVER:
+                self._wealth += 7.0
+            elif t_type == TreasureType.GOLD:
+                self._wealth += 13.0
+        self._carried_treasure = None
 
     def move_to(self, new_cell: Cell) -> None:
         self._cell.remove_object(self)
@@ -45,10 +59,12 @@ class TreasureHunter:
             self._stamina = 0
 
     def rest(self) -> None:
-        if self._stamina < 100.0:
-            self._stamina += 1.0
-            if self._stamina > 100.0:
-                self._stamina = 100.0
+        # Only rest if in hideout
+        if any(isinstance(obj, Hideout) for obj in self._cell.contents):
+            if self._stamina < 100.0:
+                self._stamina += 1.0
+                if self._stamina > 100.0:
+                    self._stamina = 100.0
 
     def is_critical(self) -> bool:
         return self._stamina <= 6.0
