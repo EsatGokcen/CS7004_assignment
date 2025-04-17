@@ -33,7 +33,15 @@ def step_hunters(hideouts: List[Hideout], map_obj: EldoriaMap) -> None:
                     continue
 
             if hunter.is_critical():
-                hunter.rest()
+                # Try to move toward known hideout
+                hideouts = hunter.get_memory()["hideouts"]
+                if hideouts:
+                    closest = min(hideouts, key=lambda h: map_obj.get_distance(hunter.get_cell(), h))
+                    neighbors = map_obj.get_adjacent_cells(hunter.get_cell())
+                    next_step = min(neighbors, key=lambda c: map_obj.get_distance(c, closest))
+                    hunter.move_to(next_step)
+                else:
+                    hunter.rest()  # fallback if no hideouts known
                 continue
 
             cell = hunter.get_cell()
@@ -55,7 +63,14 @@ def step_hunters(hideouts: List[Hideout], map_obj: EldoriaMap) -> None:
                                 obj.store_treasure(hunter)
                         break
                 else:
-                    hunter.move_to(choice(neighbors))
+                    remembered = hunter.get_memory()["treasures"]
+                    if remembered:
+                        closest = min(remembered,
+                                    key=lambda t: map_obj.get_distance(hunter.get_cell(), t.get_cell()))
+                        next_step = min(neighbors, key=lambda c: map_obj.get_distance(c, closest.get_cell()))
+                        hunter.move_to(next_step)
+                    else:
+                        hunter.move_to(choice(neighbors))
             else:
                 # Pick best treasure
                 if treasures:

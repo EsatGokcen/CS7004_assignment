@@ -28,6 +28,14 @@ class EldoriaMap:
             neighbours.append(self.get_cell(nx, ny))
         return neighbours
 
+    def get_distance(self, cell1: Cell, cell2: Cell) -> int:
+        x1, y1 = cell1.get_x(), cell1.get_y()
+        x2, y2 = cell2.get_x(), cell2.get_y()
+
+        dx = min(abs(x1 - x2), self.__width - abs(x1 - x2))
+        dy = min(abs(y1 - y2), self.__height - abs(y1 - y2))
+        return dx + dy
+
     def clear(self):
         for x in range(self.__width):
             for y in range(self.__height):

@@ -1,6 +1,5 @@
 from src.model.cell import Cell
 from src.model.hunter_skills import Skill
-from src.model.hideout import Hideout
 from src.model.treasure import Treasure
 from src.model.treasure_type import TreasureType
 from typing import List
@@ -63,6 +62,7 @@ class TreasureHunter:
 
     def rest(self) -> None:
         # Only rest if in hideout
+        from src.model.hideout import Hideout
         if any(isinstance(obj, Hideout) for obj in self._cell.contents):
             if self._stamina < 100.0:
                 self._stamina += 1.0
