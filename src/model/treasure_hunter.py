@@ -33,6 +33,9 @@ class TreasureHunter:
     def get_memory(self) -> dict:
         return self._memory
 
+    def get_survival_steps_remaining(self) -> int:
+        return self._survival_steps_remaining
+
     def get_carried_treasure(self) -> Treasure | None:
         return self._carried_treasure
 

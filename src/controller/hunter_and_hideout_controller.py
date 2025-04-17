@@ -24,9 +24,13 @@ def place_hideouts_and_hunters(hideouts: List[Hideout], map_obj: EldoriaMap, num
 def step_hunters(hideouts: List[Hideout], map_obj: EldoriaMap) -> None:
     for hideout in hideouts:
         for hunter in hideout.get_hunters():
-            if not hunter.can_act():
+            # Collapse check FIRST
+            if hunter.is_collapsed():
                 hunter.tick_survival()
-                continue
+                if hunter.get_survival_steps_remaining() <= 0:
+                    hideout.remove_hunter(hunter)
+                    hunter.get_cell().remove_object(hunter)  # full removal from map
+                    continue
 
             if hunter.is_critical():
                 hunter.rest()
