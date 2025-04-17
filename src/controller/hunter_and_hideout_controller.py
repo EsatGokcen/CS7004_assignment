@@ -1,3 +1,4 @@
+from src.controller.treasure_controller import find_cell_for_treasure
 from src.model.hideout import Hideout
 from src.model.treasure_hunter import TreasureHunter
 from src.model.hunter_skills import Skill
@@ -76,9 +77,22 @@ def step_hunters(hideouts: List[Hideout], map_obj: EldoriaMap) -> None:
                 else:
                     remembered = hunter.get_memory()["treasures"]
                     if remembered:
-                        closest = min(remembered, key=lambda t: map_obj.get_distance(hunter.get_cell(), t.get_cell()))
-                        next_step = min(neighbors, key=lambda c: map_obj.get_distance(c, closest.get_cell()))
-                        hunter.move_to(next_step)
+                        closest = min(
+                            remembered,
+                            key=lambda t: map_obj.get_distance(
+                                hunter.get_cell(),
+                                find_cell_for_treasure(map_obj, t) or hunter.get_cell()
+                            )
+                        )
+                        closest_cell = find_cell_for_treasure(map_obj, closest)
+                        if closest_cell:
+                            next_step = min(
+                                neighbors,
+                                key=lambda c: map_obj.get_distance(c, closest_cell)
+                            )
+                            hunter.move_to(next_step)
+                        else:
+                            hunter.move_to(choice(neighbors))
                     else:
                         hunter.move_to(choice(neighbors))
 

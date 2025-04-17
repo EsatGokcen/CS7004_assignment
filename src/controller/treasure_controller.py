@@ -3,6 +3,14 @@ from src.model.treasure import Treasure
 from src.model.eldoria_map import EldoriaMap
 from random import randint, choice
 
+def find_cell_for_treasure(map_obj: EldoriaMap, treasure: Treasure) -> Cell | None:
+    for x in range(map_obj.get_width()):
+        for y in range(map_obj.get_height()):
+            cell = map_obj.get_cell(x, y)
+            if treasure in cell.contents:
+                return cell
+    return None
+
 def scatter_treasures(num_treasures: int, map_obj: EldoriaMap) -> None:
     for _ in range(num_treasures):
         x = randint(0, map_obj.get_width() - 1)
