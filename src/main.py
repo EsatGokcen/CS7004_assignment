@@ -7,7 +7,7 @@ def main():
     sim = Simulation(the_map)
     sim.run()
     # HUNTERS DONT MOVE AS SMOOTHLY AS I WOULD PREFER - i think they get tired, make sure they try to get rest for stamina
-    # TREASURE NOT DEPLETING - check asssessment brief
+    # New treasure should be able to spawn, hunters die too easily
     # One cell has infinite amount of treasure by the looks of it
     # treasure is all in gold color, it should be bronze and silver too depending on type
 

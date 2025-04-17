@@ -1,6 +1,7 @@
 from src.model.treasure_type import TreasureType
 from src.model.treasure import Treasure
 from src.model.eldoria_map import EldoriaMap
+from src.model.cell import Cell
 from random import randint, choice
 
 def find_cell_for_treasure(map_obj: EldoriaMap, treasure: Treasure) -> Cell | None:
