@@ -4,6 +4,7 @@ from src.model.treasure import Treasure
 from src.model.treasure_type import TreasureType
 from src.model.hunter_skills import Skill
 from src.model.treasure_hunter import TreasureHunter
+from src.model.hideout import Hideout
 
 
 class TestTreasureHunter(unittest.TestCase):
@@ -26,7 +27,9 @@ class TestTreasureHunter(unittest.TestCase):
         self.assertEqual(self.hunter.get_cell(), new_cell)
 
     def test_rest_increases_stamina(self):
-        self.hunter.move_to(Cell(0, 1))  # drop stamina to 98
+        cell = Cell(0, 1)
+        Hideout(cell) # hunter can only rest in a hideout
+        self.hunter.move_to(cell)  # drop stamina to 98
         self.hunter.rest()
         self.assertEqual(self.hunter.get_stamina(), 99.0)
 

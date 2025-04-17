@@ -22,7 +22,7 @@ class Treasure:
         return self.__collected
 
     def lose_value(self) -> None:
-        self.__value -= self.__value * 0.01  # Lose 0.1%
+        self.__value -= self.__value * 0.1  # Lose 0.1%
         if self.__value < 0.001:
             self.__value = 0
 
