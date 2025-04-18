@@ -56,16 +56,18 @@ class TreasureHunter:
         self._cell.remove_object(self)
         new_cell.add_object(self)
         self._cell = new_cell
-        self._stamina -= 2.0
+        stamina_cost = 1.0 if self._skill == Skill.ENDURANCE else 2.0 # ENDURANCE skill logic
+        self._stamina = max(0.0, self._stamina - stamina_cost)
         if self._stamina < 0:
             self._stamina = 0
 
     def rest(self) -> None:
         # Only rest if in hideout
         from src.model.hideout import Hideout
-        if any(isinstance(obj, Hideout) for obj in self._cell.contents):
+        if any(isinstance(obj, Hideout) for obj in self._cell.get_contents()):
             if self._stamina < 100.0:
-                self._stamina += 1.0
+                recovery = 2.0 if self._skill == Skill.ENDURANCE else 1.0 # ENDURANCE skill logic
+                self._stamina += recovery
                 if self._stamina > 100.0:
                     self._stamina = 100.0
 
