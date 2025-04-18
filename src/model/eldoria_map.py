@@ -39,5 +39,5 @@ class EldoriaMap:
     def clear(self):
         for x in range(self.__width):
             for y in range(self.__height):
-                self.grid[x][y].contents.clear()
+                self.grid[x][y].get_contents().clear()
 

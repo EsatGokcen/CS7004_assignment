@@ -8,7 +8,7 @@ def find_cell_for_treasure(map_obj: EldoriaMap, treasure: Treasure) -> Cell | No
     for x in range(map_obj.get_width()):
         for y in range(map_obj.get_height()):
             cell = map_obj.get_cell(x, y)
-            if treasure in cell.contents:
+            if treasure in cell.get_contents():
                 return cell
     return None
 
@@ -25,7 +25,7 @@ def decay_all_treasures(map_obj: EldoriaMap) -> None:
     for x in range(map_obj.get_width()):
         for y in range(map_obj.get_height()):
             cell = map_obj.get_cell(x, y)
-            for obj in cell.contents[:]:
+            for obj in cell.get_contents()[:]:
                 if isinstance(obj, Treasure):
                     obj.lose_value()
                     if obj.is_depleted():

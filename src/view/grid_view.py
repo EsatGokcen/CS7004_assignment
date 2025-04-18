@@ -2,6 +2,8 @@ import tkinter as tk
 from src.controller.config import *
 from src.model.eldoria_map import EldoriaMap
 from src.model.cell import Cell
+from src.model.treasure import Treasure
+from src.model.treasure_type import TreasureType
 
 
 
@@ -33,11 +35,20 @@ class GridView:
 
     def get_color(self, cell: Cell) -> str:
         if cell.is_hideout():
-            return "green"
+            return "#228B22"  # forest green
         elif cell.contains_hunter():
-            return "blue"
+            return "#1E90FF"  # dodger blue
         elif cell.contains_knight():
-            return "red"
+            return "#8B0000"  # dark red
         elif cell.contains_treasure():
-            return "gold"
-        return "white"
+            for obj in cell.get_contents():
+                if isinstance(obj, Treasure):
+                    t_type = obj.get_type()
+                    if t_type == TreasureType.GOLD:
+                        return "#FFD700"  # gold
+                    elif t_type == TreasureType.SILVER:
+                        return "#C0C0C0"  # silver
+                    elif t_type == TreasureType.BRONZE:
+                        return "#CD7F32"  # bronze
+        return "#F5F5F5"  # off-white
+

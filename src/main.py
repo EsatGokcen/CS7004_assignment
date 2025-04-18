@@ -6,8 +6,9 @@ def main():
     the_map = EldoriaMap(MAP_WIDTH, MAP_HEIGHT)
     sim = Simulation(the_map)
     sim.run()
-    # HUNTERS DONT MOVE AS SMOOTHLY AS I WOULD PREFER - i think they get tired, make sure they try to get rest for stamina
-    # New treasure should be able to spawn, hunters die too easily
+    # HUNTERS die too easily and are bad at getting treasure
+    # HUNTERS need skills that actually do something
+    # New treasure should be able to spawn
     # One cell has infinite amount of treasure by the looks of it
     # treasure is all in gold color, it should be bronze and silver too depending on type
 

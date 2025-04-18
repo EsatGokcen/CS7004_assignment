@@ -48,7 +48,7 @@ def step_hunters(hideouts: List[Hideout], map_obj: EldoriaMap) -> None:
 
             cell = hunter.get_cell()
             neighbors = map_obj.get_adjacent_cells(cell)
-            visible_objects = [obj for neighbor in neighbors for obj in neighbor.contents]
+            visible_objects = [obj for neighbor in neighbors for obj in neighbor.get_contents()]
 
             treasures = [obj for obj in visible_objects if isinstance(obj, Treasure)]
             unused_hideouts = [obj for obj in visible_objects if isinstance(obj, Hideout)]
@@ -57,9 +57,9 @@ def step_hunters(hideouts: List[Hideout], map_obj: EldoriaMap) -> None:
 
             if hunter.is_carrying_treasure():
                 for neighbor in neighbors:
-                    if any(isinstance(obj, Hideout) for obj in neighbor.contents):
+                    if any(isinstance(obj, Hideout) for obj in neighbor.get_contents()):
                         hunter.move_to(neighbor)
-                        for obj in neighbor.contents:
+                        for obj in neighbor.get_contents():
                             if isinstance(obj, Hideout):
                                 obj.store_treasure(hunter)
                         break
@@ -69,7 +69,7 @@ def step_hunters(hideouts: List[Hideout], map_obj: EldoriaMap) -> None:
                 if treasures:
                     best = max(treasures, key=lambda t: t.get_value())
                     for neighbor in neighbors:
-                        if best in neighbor.contents:
+                        if best in neighbor.get_contents():
                             hunter.move_to(neighbor)
                             hunter._carried_treasure = best
                             best.mark_collected()

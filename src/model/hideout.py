@@ -25,7 +25,7 @@ class Hideout:
     def add_hunter(self, hunter: TreasureHunter) -> None:
         if self.has_space():
             self._hunters.append(hunter)
-            if hunter not in self._cell.contents:
+            if hunter not in self._cell.get_contents():
                 self._cell.add_object(hunter)
 
     def remove_hunter(self, hunter: TreasureHunter) -> None:
