@@ -7,8 +7,10 @@ def main():
     sim = Simulation(the_map)
     sim.run()
     # HUNTERS die too easily and are bad at getting treasure
-    # HUNTERS need skills that actually do something - covered initial endurance
+    # HUNTERS need skills that actually do something - covered initial endurance and navigation
     # New treasure should be able to spawn
+
+    # Simulation needs to stop when there are no more treasure left to collect or no more hunter left to collect treasures
 
     # ASK PRINS !!!!!! THE DEADLINE ON BRIEF IS 7TH BUT ON MOODLE IS 5TH !!!!!!!
 
