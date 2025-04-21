@@ -1,8 +1,9 @@
 from src.model.cell import Cell
+from src.model.eldoria_map import EldoriaMap
 from src.model.hunter_skills import Skill
 from src.model.treasure import Treasure
 from src.model.treasure_type import TreasureType
-from typing import List
+from typing import List, Tuple
 
 
 class TreasureHunter:
@@ -60,6 +61,23 @@ class TreasureHunter:
         self._stamina = max(0.0, self._stamina - stamina_cost)
         if self._stamina < 0:
             self._stamina = 0
+
+    def scan_for_treasure(self, map_obj: EldoriaMap) -> List[Tuple[int, int]]:
+        range_ = 2 if self._skill == Skill.NAVIGATION else 1
+        x = self.get_cell().get_x()
+        y = self.get_cell().get_y()
+        found = []
+
+        for dx in range(-range_, range_ + 1):
+            for dy in range(-range_, range_ + 1):
+                if dx == 0 and dy == 0:
+                    continue
+                nx, ny = (x + dx) % map_obj.get_width(), (y + dy) % map_obj.get_height()
+                cell = map_obj.get_cell(nx, ny)
+                if cell.contains_treasure():
+                    found.append((nx, ny))
+
+        return found
 
     def rest(self) -> None:
         # Only rest if in hideout
