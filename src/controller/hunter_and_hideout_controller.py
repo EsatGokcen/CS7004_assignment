@@ -35,6 +35,18 @@ def step_hunters(hideouts: List[Hideout], map_obj: EldoriaMap) -> None:
             if not hunter.can_act():
                 continue
 
+            # Scan visible treasure and update memory
+            found_positions = hunter.scan_for_treasure(map_obj)
+            found_treasures = []
+            for pos in found_positions:
+                cell = map_obj.get_cell(pos[0], pos[1])
+                for obj in cell.get_contents():
+                    if isinstance(obj, Treasure):
+                        found_treasures.append(obj)
+
+            hunter.remember(found_treasures, [h.get_cell() for h in hideouts])
+
+            # Handle resting
             if hunter.is_critical():
                 known_hideouts = hunter.get_memory()["hideouts"]
                 if known_hideouts:
@@ -52,8 +64,6 @@ def step_hunters(hideouts: List[Hideout], map_obj: EldoriaMap) -> None:
 
             treasures = [obj for obj in visible_objects if isinstance(obj, Treasure)]
             unused_hideouts = [obj for obj in visible_objects if isinstance(obj, Hideout)]
-
-            hunter.remember(treasures, [h.get_cell() for h in hideouts])
 
             if hunter.is_carrying_treasure():
                 for neighbor in neighbors:

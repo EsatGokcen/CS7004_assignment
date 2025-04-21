@@ -63,7 +63,7 @@ class TreasureHunter:
             self._stamina = 0
 
     def scan_for_treasure(self, map_obj: EldoriaMap) -> List[Tuple[int, int]]:
-        range_ = 2 if self._skill == Skill.NAVIGATION else 1
+        range_ = 2 if self._skill == Skill.NAVIGATION else 1 # NAVIGATION skill logic
         x = self.get_cell().get_x()
         y = self.get_cell().get_y()
         found = []
