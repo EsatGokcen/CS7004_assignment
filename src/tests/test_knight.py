@@ -41,10 +41,13 @@ class TestKnight(unittest.TestCase):
         self.assertEqual(self.knight.get_cell(), hunter_cell)
 
     def test_retreat_moves_towards_garrison(self):
+        # Move knight away from garrison first
+        away_cell = self.map.get_cell(3, 3)
+        self.knight._Knight__cell = away_cell
         self.knight._Knight__stamina = 15
         self.knight.retreat(self.map)
-        # Should move one cell toward garrison
-        self.assertNotEqual(self.knight.get_cell(), self.start_cell)
+        # Should now be closer to the garrison
+        self.assertNotEqual(self.knight.get_cell(), away_cell)
 
     def test_rest_increases_stamina(self):
         self.knight._Knight__resting = True
