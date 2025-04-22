@@ -97,9 +97,31 @@ class Knight:
             self.__target.lose_stamina(-20)
             self.__target.drop_treasure()
 
-    def retreat(self):
-        # if stamina is 20% or below retreat to garrison
-        pass
+    def retreat(self, map_obj: EldoriaMap) -> None:
+        if self.__stamina <= 20 and not self.__resting:
+            current_x, current_y = self.__cell.get_x(), self.__cell.get_y()
+            garrison_x, garrison_y = self.__garrison_origin.get_x(), self.__garrison_origin.get_y()
+
+            dx = (garrison_x - current_x + map_obj.get_width()) % map_obj.get_width()
+            dy = (garrison_y - current_y + map_obj.get_height()) % map_obj.get_height()
+
+            if dx > map_obj.get_width() // 2:
+                dx -= map_obj.get_width()
+            if dy > map_obj.get_height() // 2:
+                dy -= map_obj.get_height()
+
+            step_x = 1 if dx > 0 else -1 if dx < 0 else 0
+            step_y = 1 if dy > 0 else -1 if dy < 0 else 0
+
+            new_x = (current_x + step_x) % map_obj.get_width()
+            new_y = (current_y + step_y) % map_obj.get_height()
+
+            self.__cell = map_obj.get_cell(new_x, new_y)
+
+            if self.__cell == self.__garrison_origin:
+                self.__resting = True
+                self.__angle = 0.0
+                self.__orbit_radius = 1
 
     def rest(self):
         # rest until stamina fully restored
