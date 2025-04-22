@@ -22,6 +22,9 @@ class Knight:
     def get_stamina(self) -> float:
         return self.__stamina
 
+    def get_resting(self) -> bool:
+        return self.__resting
+
     def get_target(self) -> Optional[TreasureHunter]:
         return self.__target
 
