@@ -10,10 +10,7 @@ def main():
     # HUNTERS need skills that actually do something - covered initial endurance and navigation
     # New treasure should be able to spawn
 
-    # finish knight class and make sure garrison class is finished
-    # create unittests for knight and garrison classes
     # add controllers for knight and garrison classes
-    # add knight and garrison classes to view
 
     # Simulation needs to stop when there are no more treasure left to collect or no more hunter left to collect treasures
 
