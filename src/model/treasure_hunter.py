@@ -39,6 +39,12 @@ class TreasureHunter:
     def get_carried_treasure(self) -> Treasure | None:
         return self._carried_treasure
 
+    def lose_stamina(self, num: int) -> None:
+        self._stamina -= num
+
+    def drop_treasure(self) -> None:
+        pass
+
     def is_carrying_treasure(self) -> bool:
         return self._carried_treasure is not None
 

@@ -3,6 +3,7 @@ from src.model.treasure_hunter import TreasureHunter
 from src.model.eldoria_map import EldoriaMap
 from typing import Optional
 import math
+import random
 
 class Knight:
 
@@ -56,21 +57,45 @@ class Knight:
         if nearby_hunters:
             self.__target = max(nearby_hunters, key=lambda h: h.get_wealth(), default=None)
 
-    def chase(self):
-        # focus on a single hunter after patrol
-        # limited range pn chase
-        # lose 20% of energy after each chase
-        pass
+    def chase(self, map_obj: EldoriaMap) -> None:
+        if self.__resting or not self.__target or self.__stamina < 20:
+            return
 
-    def detain(self):
-        # drains 5% of hunter stamina
-        # forces hunter to drop any treasure they are carrying
-        pass
+        current_x, current_y = self.__cell.get_x(), self.__cell.get_y()
+        target_x, target_y = self.__target.get_cell().get_x(), self.__target.get_cell().get_y()
 
-    def challenge(self):
-        # reduces 20% of hunter stamina
-        # forces hunter to drop treasure
-        pass
+        if (current_x, current_y) == (target_x, target_y):
+            action = random.choice([self.detain, self.challenge])
+            action()
+            self.__target = None
+            return
+
+        dx = (target_x - current_x + map_obj.get_width()) % map_obj.get_width()
+        dy = (target_y - current_y + map_obj.get_height()) % map_obj.get_height()
+
+        if dx > map_obj.get_width() // 2:
+            dx -= map_obj.get_width()
+        if dy > map_obj.get_height() // 2:
+            dy -= map_obj.get_height()
+
+        step_x = 1 if dx > 0 else -1 if dx < 0 else 0
+        step_y = 1 if dy > 0 else -1 if dy < 0 else 0
+
+        new_x = (current_x + step_x) % map_obj.get_width()
+        new_y = (current_y + step_y) % map_obj.get_height()
+
+        self.__cell = map_obj.get_cell(new_x, new_y)
+        self.__stamina -= 20
+
+    def detain(self) -> None:
+        if self.__target:
+            self.__target.lose_stamina(-5)
+            self.__target.drop_treasure()
+
+    def challenge(self) -> None:
+        if self.__target:
+            self.__target.lose_stamina(-20)
+            self.__target.drop_treasure()
 
     def retreat(self):
         # if stamina is 20% or below retreat to garrison
