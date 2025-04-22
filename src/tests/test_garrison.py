@@ -25,3 +25,11 @@ class TestGarrison(unittest.TestCase):
         self.garrison.remove_knight(knight)
         self.assertNotIn(knight, self.garrison.get_knights())
         self.assertNotIn(knight, self.cell.get_contents())
+
+    def test_has_space_limit(self):
+        for _ in range(5):
+            self.garrison.add_knight(Knight(self.cell))
+        self.assertFalse(self.garrison.has_space())
+
+if __name__ == '__main__':
+    unittest.main()
