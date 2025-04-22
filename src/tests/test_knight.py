@@ -32,3 +32,10 @@ class TestKnight(unittest.TestCase):
         h2 = MockTreasureHunter(c2, wealth=20)
         self.knight.scan(self.map)
         self.assertEqual(self.knight.get_target(), h2)
+
+    def test_chase_moves_toward_target(self):
+        hunter_cell = self.map.get_cell(6, 5)
+        hunter = MockTreasureHunter(hunter_cell)
+        self.knight._Knight__target = hunter
+        self.knight.chase(self.map)
+        self.assertEqual(self.knight.get_cell(), hunter_cell)
