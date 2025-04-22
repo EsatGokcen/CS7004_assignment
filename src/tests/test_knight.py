@@ -39,3 +39,18 @@ class TestKnight(unittest.TestCase):
         self.knight._Knight__target = hunter
         self.knight.chase(self.map)
         self.assertEqual(self.knight.get_cell(), hunter_cell)
+
+    def test_retreat_moves_towards_garrison(self):
+        self.knight._Knight__stamina = 15
+        self.knight.retreat(self.map)
+        # Should move one cell toward garrison
+        self.assertNotEqual(self.knight.get_cell(), self.start_cell)
+
+    def test_rest_increases_stamina(self):
+        self.knight._Knight__resting = True
+        self.knight._Knight__stamina = 50
+        self.knight.rest()
+        self.assertEqual(self.knight.get_stamina(), 60)
+
+if __name__ == '__main__':
+    unittest.main()
