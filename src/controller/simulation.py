@@ -1,10 +1,13 @@
 from src.controller.config import *
 from src.controller.treasure_controller import *
 from src.controller.hunter_and_hideout_controller import *
+from src.controller.knight_and_garrison_controller import *
 from src.view.main_window import MainWindow
 from src.model.eldoria_map import EldoriaMap
 from src.model.hideout import Hideout
-from typing import List
+from src.model.garrison import Garrison
+from src.model.knight import Knight
+from typing import List, Optional
 
 class Simulation:
 
@@ -13,6 +16,8 @@ class Simulation:
         self.__running = False
         self._hideouts: List[Hideout] = []
         self.ui = MainWindow(self.map)
+        self._garrison: Optional[Garrison] = None
+        self._knights: List[Knight] = []
         self.ui.controls.on_start = self.start
         self.ui.controls.on_pause = self.pause
         self.ui.controls.on_reset = self.reset
@@ -34,6 +39,7 @@ class Simulation:
         self.ui.info_panel.update_info(0, 0, 0, NUM_HIDEOUTS, 0, 0, 0, 0)
         scatter_treasures(NUM_INITIAL_TREASURES, self.map)
         place_hideouts_and_hunters(self._hideouts, self.map, NUM_HIDEOUTS, INITIAL_HUNTERS_PER_HIDEOUT)
+        self._garrison, self._knights = place_garrison_with_knights(self.map, NUM_KNIGHTS)
         self.ui.grid_view.draw_grid()
 
     def run_step(self) -> None:
@@ -42,11 +48,13 @@ class Simulation:
         self._step_count += 1
         decay_all_treasures(self.map)
         step_hunters(self._hideouts, self.map)
+        step_knights(self._knights, self.map)
         self.ui.grid_view.draw_grid()
+
         hunters = sum(len(h.get_hunters()) for h in self._hideouts)
-        knights = 0  # Update this when knight logic is added
+        knights = len(self._knights)
         hideouts = len(self._hideouts)
-        garrisons = 0 # Update this when garrison logic is added
+        garrisons = 1 if self._garrison else 0
 
         bronze = silver = gold = 0
         for h in self._hideouts:
@@ -63,6 +71,7 @@ class Simulation:
     def run(self) -> None:
         scatter_treasures(NUM_INITIAL_TREASURES, self.map)
         place_hideouts_and_hunters(self._hideouts, self.map, NUM_HIDEOUTS, INITIAL_HUNTERS_PER_HIDEOUT)
+        self._garrison, self._knights = place_garrison_with_knights(self.map, NUM_KNIGHTS)
         self.ui.grid_view.draw_grid()
         self.ui.run()
 
