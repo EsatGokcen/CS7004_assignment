@@ -38,6 +38,8 @@ class GridView:
             return "#228B22"  # forest green
         elif cell.contains_hunter():
             return "#1E90FF"  # dodger blue
+        elif cell.is_garrison():
+            return "#BF40BF"  # bright purple
         elif cell.contains_knight():
             return "#8B0000"  # dark red
         elif cell.contains_treasure():
