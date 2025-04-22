@@ -18,3 +18,9 @@ class TestKnight(unittest.TestCase):
         self.map = EldoriaMap(10, 10)
         self.start_cell = self.map.get_cell(5, 5)
         self.knight = Knight(self.start_cell)
+
+    def test_patrol_spiral_movement(self):
+        prev_x, prev_y = self.knight.get_cell().get_x(), self.knight.get_cell().get_y()
+        self.knight.patrol(self.map)
+        new_x, new_y = self.knight.get_cell().get_x(), self.knight.get_cell().get_y()
+        self.assertNotEqual((prev_x, prev_y), (new_x, new_y))
