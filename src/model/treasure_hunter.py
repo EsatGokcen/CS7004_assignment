@@ -43,7 +43,9 @@ class TreasureHunter:
         self._stamina -= num
 
     def drop_treasure(self) -> None:
-        pass
+        if self._carried_treasure:
+            self._cell.add_object(self._carried_treasure)
+            self._carried_treasure = None
 
     def is_carrying_treasure(self) -> bool:
         return self._carried_treasure is not None
