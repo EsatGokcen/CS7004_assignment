@@ -32,19 +32,20 @@ class Knight:
         if self.__resting or self.__target:
             return
 
-        # Spiral motion outward from garrison origin
-        self.__angle += math.pi / 6  # increment angle
-        self.__orbit_radius += 0.05  # slowly increase radius
+        self.__angle += math.pi / 6
+        self.__orbit_radius += 0.05
 
         x0, y0 = self.__garrison_origin.get_x(), self.__garrison_origin.get_y()
         dx = int(round(self.__orbit_radius * math.cos(self.__angle)))
         dy = int(round(self.__orbit_radius * math.sin(self.__angle)))
         new_x = (x0 + dx) % map_obj.get_width()
         new_y = (y0 + dy) % map_obj.get_height()
+
+        self.__cell.remove_object(self)
         self.__cell = map_obj.get_cell(new_x, new_y)
+        self.__cell.add_object(self)
 
     def scan(self, map_obj: EldoriaMap) -> None:
-        # Detects and chooses the wealthiest hunter within 3 cells
         if self.__resting:
             return
 
@@ -90,7 +91,9 @@ class Knight:
         new_x = (current_x + step_x) % map_obj.get_width()
         new_y = (current_y + step_y) % map_obj.get_height()
 
+        self.__cell.remove_object(self)
         self.__cell = map_obj.get_cell(new_x, new_y)
+        self.__cell.add_object(self)
         self.__stamina -= 20
 
     def detain(self) -> None:
@@ -122,7 +125,9 @@ class Knight:
             new_x = (current_x + step_x) % map_obj.get_width()
             new_y = (current_y + step_y) % map_obj.get_height()
 
+            self.__cell.remove_object(self)
             self.__cell = map_obj.get_cell(new_x, new_y)
+            self.__cell.add_object(self)
 
             if self.__cell == self.__garrison_origin:
                 self.__resting = True

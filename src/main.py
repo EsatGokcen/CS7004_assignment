@@ -8,9 +8,8 @@ def main():
     sim.run()
     # HUNTERS die too easily and are bad at getting treasure
     # HUNTERS need skills that actually do something - covered initial endurance and navigation
-    # New treasure should be able to spawn
 
-    # add controllers for knight and garrison classes
+    #KNIGHTS NEED TO PATROL MORE RANDOMLY INSTEAD OF ALL GOING THE SAME DIRECTION
 
     # Simulation needs to stop when there are no more treasure left to collect or no more hunter left to collect treasures
 
