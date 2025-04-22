@@ -24,3 +24,11 @@ class TestKnight(unittest.TestCase):
         self.knight.patrol(self.map)
         new_x, new_y = self.knight.get_cell().get_x(), self.knight.get_cell().get_y()
         self.assertNotEqual((prev_x, prev_y), (new_x, new_y))
+
+    def test_scan_selects_wealthiest(self):
+        c1 = self.map.get_cell(6, 5)
+        c2 = self.map.get_cell(5, 6)
+        h1 = MockTreasureHunter(c1, wealth=5)
+        h2 = MockTreasureHunter(c2, wealth=20)
+        self.knight.scan(self.map)
+        self.assertEqual(self.knight.get_target(), h2)

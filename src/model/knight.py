@@ -22,6 +22,9 @@ class Knight:
     def get_stamina(self) -> float:
         return self.__stamina
 
+    def get_target(self) -> Optional[TreasureHunter]:
+        return self.__target
+
     def patrol(self, map_obj: EldoriaMap) -> None:
         if self.__resting or self.__target:
             return
