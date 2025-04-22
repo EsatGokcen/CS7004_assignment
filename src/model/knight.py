@@ -123,7 +123,8 @@ class Knight:
                 self.__angle = 0.0
                 self.__orbit_radius = 1
 
-    def rest(self):
-        # rest until stamina fully restored
-        # start patrolling again once stamina fully restored
-        pass
+    def rest(self) -> None:
+        if self.__resting and self.__cell == self.__garrison_origin:
+            self.__stamina = min(100.0, self.__stamina + 10.0)
+            if self.__stamina == 100.0:
+                self.__resting = False
