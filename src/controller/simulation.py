@@ -8,6 +8,7 @@ from src.model.hideout import Hideout
 from src.model.garrison import Garrison
 from src.model.knight import Knight
 from typing import List, Optional
+from tkinter import messagebox
 import gc
 
 class Simulation:
@@ -23,6 +24,25 @@ class Simulation:
         self.ui.controls.on_pause = self.pause
         self.ui.controls.on_reset = self.reset
         self._step_count = 0
+
+    def check_end_condition(self):
+        treasure_remaining = any(
+            obj for row in self.map.grid
+            for cell in row
+            for obj in cell.get_contents()
+            if isinstance(obj, Treasure)
+        )
+
+        hunters_remaining = any(
+            obj for row in self.map.grid
+            for cell in row
+            for obj in cell.get_contents()
+            if isinstance(obj, TreasureHunter) and obj.can_act()
+        )
+
+        if not treasure_remaining or not hunters_remaining:
+            self.__running = False
+            messagebox.showinfo("Simulation Ended", "The simulation has stopped.\nNo more treasure or hunters remain.")
 
     def start(self) -> None:
         if not self.__running:
@@ -82,6 +102,9 @@ class Simulation:
             self._step_count, hunters, knights, hideouts, garrisons, bronze, silver, gold
         )
         self.ui.root.after(500, self.run_step)  # delay in ms
+
+        # End check
+        self.check_end_condition()
 
     def run(self) -> None:
         scatter_treasures(NUM_INITIAL_TREASURES, self.map)
