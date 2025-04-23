@@ -15,6 +15,8 @@ class Knight:
         self.__angle: float = 0.0
         self.__orbit_radius: int = 1
         self.__garrison_origin: Cell = cell
+        self.__direction = None
+        self.__step_count: int = 0
 
     def get_cell(self) -> Cell:
         return self.__cell
@@ -32,18 +34,34 @@ class Knight:
         if self.__resting or self.__target:
             return
 
-        self.__angle += math.pi / 6
-        self.__orbit_radius += 0.05
+        self.__direction = random.uniform(0, 2 * math.pi)
+        self.__step_count = 0
 
-        x0, y0 = self.__garrison_origin.get_x(), self.__garrison_origin.get_y()
-        dx = int(round(self.__orbit_radius * math.cos(self.__angle)))
-        dy = int(round(self.__orbit_radius * math.sin(self.__angle)))
-        new_x = (x0 + dx) % map_obj.get_width()
-        new_y = (y0 + dy) % map_obj.get_height()
+        # Change direction occasionally for variety
+        if self.__step_count % 8 == 0:
+            angle_variation = random.uniform(-math.pi / 6, math.pi / 6)
+            self.__direction += angle_variation
 
+        # Small outward bias from garrison origin
+        gx, gy = self.__garrison_origin.get_x(), self.__garrison_origin.get_y()
+        cx, cy = self.__cell.get_x(), self.__cell.get_y()
+        vec_x, vec_y = cx - gx, cy - gy
+        outward_bias = 0.2  # how much to push outward
+        self.__direction += outward_bias * math.atan2(vec_y, vec_x)
+
+        # Calculate new position
+        step_size = 1
+        dx = int(round(step_size * math.cos(self.__direction)))
+        dy = int(round(step_size * math.sin(self.__direction)))
+        new_x = (cx + dx) % map_obj.get_width()
+        new_y = (cy + dy) % map_obj.get_height()
+
+        # Move knight
         self.__cell.remove_object(self)
         self.__cell = map_obj.get_cell(new_x, new_y)
         self.__cell.add_object(self)
+
+        self.__step_count += 1
 
     def scan(self, map_obj: EldoriaMap) -> None:
         if self.__resting:
