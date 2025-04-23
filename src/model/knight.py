@@ -118,11 +118,13 @@ class Knight:
         if self.__target:
             self.__target.lose_stamina(-5)
             self.__target.drop_treasure()
+            print("Hunter detained")
 
     def challenge(self) -> None:
         if self.__target:
             self.__target.lose_stamina(-20)
             self.__target.drop_treasure()
+            print("Hunter challenged")
 
     def retreat(self, map_obj: EldoriaMap) -> None:
         if self.__stamina <= 20 and not self.__resting:

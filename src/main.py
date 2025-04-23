@@ -9,8 +9,8 @@ def main():
     # HUNTERS die too easily and are bad at getting treasure
     # HUNTERS need skills that actually do something - covered initial endurance and navigation
 
-    # Simulation needs to stop when there are no more treasure left to collect or no more hunter left to collect treasures
-    # Optimise the reset button, every reset slows down the simulation by a lot
+    # KNIGHTS disappear! Maybe they don't come out of the garrison after resting?
+    # KNIGHTS don't challenge or detain hunters as much as they should
 
     # ASK PRINS !!!!!! THE DEADLINE ON BRIEF IS 7TH BUT ON MOODLE IS 5TH !!!!!!!
 

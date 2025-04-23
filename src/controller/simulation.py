@@ -63,6 +63,7 @@ class Simulation:
                     cell.remove_object(obj)
 
         # Clear simulation-owned object lists to drop remaining references
+        self.map.clear()
         self._hideouts.clear()
         self._knights.clear()
         self._step_count = 0
