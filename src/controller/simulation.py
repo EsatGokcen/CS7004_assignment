@@ -8,6 +8,7 @@ from src.model.hideout import Hideout
 from src.model.garrison import Garrison
 from src.model.knight import Knight
 from typing import List, Optional
+import gc
 
 class Simulation:
 
@@ -33,9 +34,23 @@ class Simulation:
 
     def reset(self) -> None:
         self.__running = False
-        self.map.clear()
+
+        # Actively remove all references to objects from map cells
+        for x in range(self.map.get_width()):
+            for y in range(self.map.get_height()):
+                cell = self.map.get_cell(x, y)
+                for obj in cell.get_contents()[:]:  # Safe iteration
+                    cell.remove_object(obj)
+
+        # Clear simulation-owned object lists to drop remaining references
         self._hideouts.clear()
+        self._knights.clear()
         self._step_count = 0
+
+        # Force Python to collect unused objects
+        gc.collect()
+
+        # Recreate new simulation entities
         self.ui.info_panel.update_info(0, 0, 0, NUM_HIDEOUTS, 0, 0, 0, 0)
         scatter_treasures(NUM_INITIAL_TREASURES, self.map)
         place_hideouts_and_hunters(self._hideouts, self.map, NUM_HIDEOUTS, INITIAL_HUNTERS_PER_HIDEOUT)
