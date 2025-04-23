@@ -9,7 +9,6 @@ from src.model.garrison import Garrison
 from src.model.knight import Knight
 from typing import List, Optional
 from tkinter import messagebox
-import gc
 
 class Simulation:
 
@@ -67,9 +66,6 @@ class Simulation:
         self._hideouts.clear()
         self._knights.clear()
         self._step_count = 0
-
-        # Force Python to collect unused objects
-        gc.collect()
 
         # Recreate new simulation entities
         self.ui.info_panel.update_info(0, 0, 0, NUM_HIDEOUTS, 0, 0, 0, 0)

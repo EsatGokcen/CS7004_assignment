@@ -7,10 +7,11 @@ def main():
     sim = Simulation(the_map)
     sim.run()
     # HUNTERS die too easily and are bad at getting treasure
-    # HUNTERS need skills that actually do something - covered initial endurance and navigation
 
     # KNIGHTS disappear! Maybe they don't come out of the garrison after resting?
     # KNIGHTS don't challenge or detain hunters as much as they should
+
+    # No use of sklearn or AI methods found, which would be needed for a top grade (70–100). !!!!!
 
     # ASK PRINS !!!!!! THE DEADLINE ON BRIEF IS 7TH BUT ON MOODLE IS 5TH !!!!!!!
 

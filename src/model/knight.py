@@ -1,5 +1,6 @@
 from src.model.cell import Cell
 from src.model.treasure_hunter import TreasureHunter
+from src.model.hunter_skills import Skill
 from src.model.eldoria_map import EldoriaMap
 from typing import Optional
 import math
@@ -77,6 +78,9 @@ class Knight:
                     cell = map_obj.get_cell(x, y)
                     for obj in cell.get_contents():
                         if isinstance(obj, TreasureHunter):
+                            # Stealth hunters have a 50% chance to avoid detection
+                            if obj.get_skill() == Skill.STEALTH and random.random() < 0.5:
+                                continue
                             nearby_hunters.append(obj)
 
         if nearby_hunters:
