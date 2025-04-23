@@ -9,9 +9,8 @@ def main():
     # HUNTERS die too easily and are bad at getting treasure
     # HUNTERS need skills that actually do something - covered initial endurance and navigation
 
-    #KNIGHTS NEED TO PATROL MORE RANDOMLY INSTEAD OF ALL GOING THE SAME DIRECTION
-
     # Simulation needs to stop when there are no more treasure left to collect or no more hunter left to collect treasures
+    # Optimise the reset button, every reset slows down the simulation by a lot
 
     # ASK PRINS !!!!!! THE DEADLINE ON BRIEF IS 7TH BUT ON MOODLE IS 5TH !!!!!!!
 
