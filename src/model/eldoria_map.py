@@ -2,7 +2,7 @@ from src.model.cell import Cell
 
 class EldoriaMap:
 
-    def __init__(self, width: int = 30, height: int = 30):
+    def __init__(self, width: int = 20, height: int = 20):
         self.__width = width
         self.__height = height
         self.grid = [[Cell(x, y) for y in range(height)] for x in range(width)]
