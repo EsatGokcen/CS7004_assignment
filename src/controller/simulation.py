@@ -69,9 +69,9 @@ class Simulation:
 
         # Recreate new simulation entities
         self.ui.info_panel.update_info(0, 0, 0, NUM_HIDEOUTS, 0, 0, 0, 0)
-        scatter_treasures(NUM_INITIAL_TREASURES, self.map)
-        place_hideouts_and_hunters(self._hideouts, self.map, NUM_HIDEOUTS, INITIAL_HUNTERS_PER_HIDEOUT)
         self._garrison, self._knights = place_garrison_with_knights(self.map, NUM_KNIGHTS)
+        place_hideouts_and_hunters(self._hideouts, self.map, NUM_HIDEOUTS, INITIAL_HUNTERS_PER_HIDEOUT)
+        scatter_treasures(NUM_INITIAL_TREASURES, self.map)
         self.ui.grid_view.draw_grid()
 
     def run_step(self) -> None:
@@ -104,9 +104,9 @@ class Simulation:
         self.check_end_condition()
 
     def run(self) -> None:
-        scatter_treasures(NUM_INITIAL_TREASURES, self.map)
-        place_hideouts_and_hunters(self._hideouts, self.map, NUM_HIDEOUTS, INITIAL_HUNTERS_PER_HIDEOUT)
         self._garrison, self._knights = place_garrison_with_knights(self.map, NUM_KNIGHTS)
+        place_hideouts_and_hunters(self._hideouts, self.map, NUM_HIDEOUTS, INITIAL_HUNTERS_PER_HIDEOUT)
+        scatter_treasures(NUM_INITIAL_TREASURES, self.map)
         self.ui.grid_view.draw_grid()
         self.ui.run()
 
