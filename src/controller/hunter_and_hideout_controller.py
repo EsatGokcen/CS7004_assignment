@@ -67,6 +67,36 @@ def step_hunters(hideouts: List[Hideout], map_obj: EldoriaMap) -> None:
 
             is_carrying = 1 if hunter.is_carrying_treasure() else 0
 
+            if hunter.is_carrying_treasure():
+                neighbors = map_obj.get_adjacent_cells(hunter.get_cell())
+                for neighbor in neighbors:
+                    if any(obj.__class__.__name__ == "Hideout" for obj in neighbor.get_contents()):
+                        hunter.move_to(neighbor)
+                        for obj in neighbor.get_contents():
+                            if isinstance(obj, Hideout):
+                                obj.store_treasure(hunter)
+                        break
+                else:
+                    if known_hideouts:
+                        closest = min(known_hideouts, key=lambda h: map_obj.get_distance(hunter.get_cell(), h))
+                        next_step = min(neighbors, key=lambda c: map_obj.get_distance(c, closest))
+                        hunter.move_to(next_step)
+                    else:
+                        hunter.move_to(choice(neighbors))
+                continue
+
+            if stamina < 30:
+                if known_hideouts:
+                    closest = min(known_hideouts, key=lambda h: map_obj.get_distance(hunter.get_cell(), h))
+                    neighbors = map_obj.get_adjacent_cells(hunter.get_cell())
+                    next_step = min(neighbors, key=lambda c: map_obj.get_distance(c, closest))
+                    hunter.move_to(next_step)
+                continue
+
+            if stamina < 90 and any(isinstance(obj, Hideout) for obj in hunter.get_cell().get_contents()):
+                hunter.rest()
+                continue
+
             action = decide_action(stamina, dist_to_treasure, dist_to_hideout, knight_nearby, is_carrying)
             cell = hunter.get_cell()
             neighbors = map_obj.get_adjacent_cells(cell)
