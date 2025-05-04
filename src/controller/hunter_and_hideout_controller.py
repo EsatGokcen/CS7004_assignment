@@ -65,7 +65,9 @@ def step_hunters(hideouts: List[Hideout], map_obj: EldoriaMap) -> None:
                     knight_nearby = 1
                     break
 
-            action = decide_action(stamina, dist_to_treasure, dist_to_hideout, knight_nearby)
+            is_carrying = 1 if hunter.is_carrying_treasure() else 0
+
+            action = decide_action(stamina, dist_to_treasure, dist_to_hideout, knight_nearby, is_carrying)
             cell = hunter.get_cell()
             neighbors = map_obj.get_adjacent_cells(cell)
             visible_objects = [obj for neighbor in neighbors for obj in neighbor.get_contents()]
