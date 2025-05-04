@@ -13,7 +13,5 @@ def main():
 
     # No use of sklearn or AI methods found, which would be needed for a top grade (70–100). !!!!!
 
-    # ASK PRINS !!!!!! THE DEADLINE ON BRIEF IS 7TH BUT ON MOODLE IS 5TH !!!!!!!
-
 if __name__ == '__main__':
     main()
