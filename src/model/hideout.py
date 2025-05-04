@@ -48,6 +48,8 @@ class Hideout:
             skill_choice = random.choice(list(skills_present))
             new_hunter = TreasureHunter(self._cell, skill_choice)
             self.add_hunter(new_hunter)
+            self._cell.add_object(new_hunter)
+            print(f"✅ Recruited new hunter with skill {skill_choice.name} at cell ({self._cell.get_x()}, {self._cell.get_y()})")
             return new_hunter
         return None
 
