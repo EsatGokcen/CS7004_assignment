@@ -19,10 +19,21 @@ def step_knights(knights: list[Knight], map_obj: EldoriaMap) -> None:
             knight.rest()
             continue
 
-        knight.scan(map_obj)
+        # If knight has recovered but is still in garrison, resume patrol
+        if not knight.get_resting() and knight.get_cell() == knight.get_garrison_origin():
+            knight.patrol(map_obj)
+            continue
 
-        if knight.get_target():
-            target = knight.get_target()
+        knight.scan(map_obj)
+        target = knight.get_target()
+
+        if target:
+            # Ensure target is still valid
+            if target not in target.get_cell().get_contents():
+                knight._target = None
+                knight.patrol(map_obj)
+                continue
+
             stamina = knight.get_stamina()
             dist_to_hunter = map_obj.get_distance(knight.get_cell(), target.get_cell())
             hunter_wealth = target.get_wealth()
@@ -36,6 +47,10 @@ def step_knights(knights: list[Knight], map_obj: EldoriaMap) -> None:
             elif action == 2:
                 knight._target = target
                 knight.chase(map_obj)
+
+                # Refresh scan if target lost after chase
+                if knight.get_target() is None:
+                    knight.scan(map_obj)
             else:
                 knight.patrol(map_obj)
 

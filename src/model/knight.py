@@ -14,8 +14,6 @@ class Knight:
         self.__target: Optional[TreasureHunter] = None
         self.__resting: bool = False
         self.__garrison_origin: Cell = cell
-        self.__direction = None
-        self.__step_count: int = 0
 
     def get_cell(self) -> Cell:
         return self.__cell
@@ -29,38 +27,29 @@ class Knight:
     def get_target(self) -> Optional[TreasureHunter]:
         return self.__target
 
+    def get_garrison_origin(self) -> Cell:
+        return self.__garrison_origin
+
     def patrol(self, map_obj: EldoriaMap) -> None:
         if self.__resting or self.__target:
             return
 
-        self.__direction = random.uniform(0, 2 * math.pi)
-        self.__step_count = 0
+        from random import choice
 
-        # Change direction occasionally for variety
-        if self.__step_count % 8 == 0:
-            angle_variation = random.uniform(-math.pi / 6, math.pi / 6)
-            self.__direction += angle_variation
-
-        # Small outward bias from garrison origin
-        gx, gy = self.__garrison_origin.get_x(), self.__garrison_origin.get_y()
         cx, cy = self.__cell.get_x(), self.__cell.get_y()
-        vec_x, vec_y = cx - gx, cy - gy
-        outward_bias = 0.2  # how much to push outward
-        self.__direction += outward_bias * math.atan2(vec_y, vec_x)
+        neighbors = []
+        for dx in [-1, 0, 1]:
+            for dy in [-1, 0, 1]:
+                if dx == 0 and dy == 0:
+                    continue
+                new_x = (cx + dx) % map_obj.get_width()
+                new_y = (cy + dy) % map_obj.get_height()
+                neighbors.append(map_obj.get_cell(new_x, new_y))
 
-        # Calculate new position
-        step_size = 1
-        dx = int(round(step_size * math.cos(self.__direction)))
-        dy = int(round(step_size * math.sin(self.__direction)))
-        new_x = (cx + dx) % map_obj.get_width()
-        new_y = (cy + dy) % map_obj.get_height()
-
-        # Move knight
+        new_cell = choice(neighbors)
         self.__cell.remove_object(self)
-        self.__cell = map_obj.get_cell(new_x, new_y)
+        self.__cell = new_cell
         self.__cell.add_object(self)
-
-        self.__step_count += 1
 
     def scan(self, map_obj: EldoriaMap) -> None:
         if self.__resting:
@@ -72,17 +61,17 @@ class Knight:
         for dx in range(-3, 4):
             for dy in range(-3, 4):
                 if abs(dx) + abs(dy) <= 3:
-                    x, y = (x0 + dx) % map_obj.get_width(), (y0 + dy) % map_obj.get_height()
+                    x = (x0 + dx) % map_obj.get_width()
+                    y = (y0 + dy) % map_obj.get_height()
                     cell = map_obj.get_cell(x, y)
                     for obj in cell.get_contents():
                         if isinstance(obj, TreasureHunter):
-                            # Stealth hunters have a 50% chance to avoid detection
                             if obj.get_skill() == Skill.STEALTH and random.random() < 0.5:
                                 continue
-                            nearby_hunters.append(obj)
+                            if obj in cell.get_contents():
+                                nearby_hunters.append(obj)
 
-        if nearby_hunters:
-            self.__target = max(nearby_hunters, key=lambda h: h.get_wealth(), default=None)
+        self.__target = max(nearby_hunters, key=lambda h: h.get_wealth(), default=None)
 
     def chase(self, map_obj: EldoriaMap) -> None:
         if self.__resting or not self.__target or self.__stamina < 20:
