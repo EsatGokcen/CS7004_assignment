@@ -93,6 +93,7 @@ class Knight:
         current_x, current_y = self.__cell.get_x(), self.__cell.get_y()
         target_x, target_y = self.__target.get_cell().get_x(), self.__target.get_cell().get_y()
 
+        # Already on same cell — detain immediately
         if (current_x, current_y) == (target_x, target_y):
             action = random.choice([self.detain, self.challenge])
             action()
@@ -117,6 +118,12 @@ class Knight:
         self.__cell = map_obj.get_cell(new_x, new_y)
         self.__cell.add_object(self)
         self.__stamina -= 20
+
+        # Check again after moving — detain if now on hunter
+        if self.__target and self.__cell == self.__target.get_cell():
+            action = random.choice([self.detain, self.challenge])
+            action()
+            self.__target = None
 
     def detain(self) -> None:
         if self.__target:
