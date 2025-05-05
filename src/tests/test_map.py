@@ -18,7 +18,7 @@ class TestMapAndCell(unittest.TestCase):
         self.assertTrue(cell.is_empty())
         cell.add_object(treasure)
         self.assertFalse(cell.is_empty())
-        self.assertIn(treasure, cell.contents)
+        self.assertIn(treasure, cell.get_contents())
 
         cell.remove_object(treasure)
         self.assertTrue(cell.is_empty())

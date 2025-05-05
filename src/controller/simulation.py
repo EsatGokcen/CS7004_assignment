@@ -1,5 +1,5 @@
 from src.controller.config import *
-from src.controller.treasure_controller import *
+from src.controller.treasure_controller import scatter_treasures, decay_all_treasures
 from src.controller.hunter_and_hideout_controller import *
 from src.controller.knight_and_garrison_controller import *
 from src.view.main_window import MainWindow

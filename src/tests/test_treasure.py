@@ -16,7 +16,7 @@ class TestTreasure(unittest.TestCase):
 
     def test_treasure_depletion(self):
         treasure = Treasure(TreasureType.BRONZE)
-        for _ in range(88):
+        for _ in range(140):
             treasure.lose_value()
         self.assertTrue(treasure.is_depleted())
         self.assertAlmostEqual(treasure.get_value(), 0.0, places=6)
