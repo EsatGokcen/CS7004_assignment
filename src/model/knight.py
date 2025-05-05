@@ -13,8 +13,6 @@ class Knight:
         self.__stamina: float = 100.0
         self.__target: Optional[TreasureHunter] = None
         self.__resting: bool = False
-        self.__angle: float = 0.0
-        self.__orbit_radius: int = 1
         self.__garrison_origin: Cell = cell
         self.__direction = None
         self.__step_count: int = 0
@@ -162,8 +160,6 @@ class Knight:
 
             if self.__cell == self.__garrison_origin:
                 self.__resting = True
-                self.__angle = 0.0
-                self.__orbit_radius = 1
 
     def rest(self) -> None:
         if self.__resting and self.__cell == self.__garrison_origin:
