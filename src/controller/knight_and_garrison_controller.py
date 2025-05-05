@@ -17,11 +17,8 @@ def step_knights(knights: list[Knight], map_obj: EldoriaMap) -> None:
     for knight in knights:
         if knight.get_resting():
             knight.rest()
-            continue
-
-        # If knight has recovered but is still in garrison, resume patrol
-        if not knight.get_resting() and knight.get_cell() == knight.get_garrison_origin():
-            knight.patrol(map_obj)
+            if not knight.get_resting() and knight.get_cell() == knight.get_garrison_origin():
+                knight.patrol(map_obj)
             continue
 
         knight.scan(map_obj)
