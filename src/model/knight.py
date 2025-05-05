@@ -47,9 +47,10 @@ class Knight:
                 neighbors.append(map_obj.get_cell(new_x, new_y))
 
         new_cell = choice(neighbors)
-        self.__cell.remove_object(self)
-        self.__cell = new_cell
-        self.__cell.add_object(self)
+        if new_cell != self.__cell:
+            self.__cell.remove_object(self)
+            self.__cell = new_cell
+            self.__cell.add_object(self)
 
     def scan(self, map_obj: EldoriaMap) -> None:
         if self.__resting:
@@ -100,6 +101,12 @@ class Knight:
 
         new_x = (current_x + step_x) % map_obj.get_width()
         new_y = (current_y + step_y) % map_obj.get_height()
+
+        # fallback if move results in no change
+        if (new_x, new_y) == (current_x, current_y):
+            rand_dx, rand_dy = random.choice([(1, 0), (-1, 0), (0, 1), (0, -1)])
+            new_x = (current_x + rand_dx) % map_obj.get_width()
+            new_y = (current_y + rand_dy) % map_obj.get_height()
 
         self.__cell.remove_object(self)
         self.__cell = map_obj.get_cell(new_x, new_y)
